@@ -133,6 +133,10 @@ body{
     /* right: 0; */
     float: right;
 }
+.next, .prev {
+    position: absolute;
+    top: 50%;
+}
 
 .carousel-caption {
     position: absolute;
