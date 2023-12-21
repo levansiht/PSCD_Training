@@ -1,0 +1,93 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.bxslider img {
+    display: none;
+}
+.bxslider img.active {
+    display: inline-block;
+}
+body {
+    color: #50514F;
+}
+
+.example-slider {
+    position: relative;
+    width: 610px;
+    height: 460px;
+    margin: 20px auto;
+}
+.bxslider img{
+    max-width: 100%;
+}
+.bx-controls-direction a {
+    position: absolute;
+    top: 50%;
+    margin-top: -16px;
+    outline: 0;
+    width: 32px;
+    height: 32px;
+    text-indent: -9999px;
+    z-index: 9999;
+}
+.bx-prev {
+    left: 10px;
+    background: url(controls.png) no-repeat 0 -32px;
+    z-index: 100;
+}
+.bx-next {
+    right: 10px;
+    background: url(controls.png) no-repeat -43px -32px;
+    z-index: 100;
+}
+.bx-pager {
+    text-align: center;
+    font-size: .85em;
+    font-family: Arial;
+    font-weight: bold;
+    color: #666;
+    padding-top: 20px;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+}
+.bx-pager a{
+    background: #cab0b0;
+}
+a.active {
+    background: #000;
+}
+.bx-pager-item {
+    font-size: 0;
+    line-height: 0;
+    display: inline-block;
+    vertical-align: bottom;
+}
+.bx-default-pager a {
+    text-indent: -9999px;
+    display: block;
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    outline: 0;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.bx-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #666;
+    background: rgba(80, 80, 80, 0.75);
+    width: 100%;
+}
+.bx-caption span {
+    color: #fff;
+    font-family: Arial;
+    display: block;
+    font-size: .85em;
+    padding: 10px;
+}
