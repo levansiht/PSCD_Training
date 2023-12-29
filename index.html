@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">    
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <title>Data table</title>
+</head>
+<body>
+    <div class="box-header"><h3>Data Table With Full Features</h3></div>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Show
+                    <select id="select">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    entries
+                </label>
+            </div>
+            <div class="col-sm-6 search">
+                <label>
+                    Seacrh:
+                    <input type="search" id="search">
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th class="sorting" data-column = "0" style="width: 175px;">Name</th>
+                            <th class="sorting" data-column = "1" style="width: 175px;">Position</th>
+                            <th class="sorting" data-column = "2" style="width: 175px;">Office</th>
+                            <th class="sorting" data-column = "3" style="width: 175px;">Extn.</th>
+                            <th class="sorting" data-column = "4" style="width: 175px;">Start date</th>
+                            <th class="sorting" data-column = "5" style="width: 175px;">Salary</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Office</th>
+                            <th>Extn.</th>
+                            <th>Start date</th>
+                            <th>Salary</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5" id="entries-info">
+                <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing 11 to 20 of 57 entries</div>
+            </div>
+            <div class="col-sm-7">
+                <ul class="pagination" id="pagination">
+                    <li class="pagination-btn prev"><a href="#">Previous</a></li>
+                    <li class="pagination-btn next"><a href="#">Next</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script  type="module" src="./test3.js"></script>
+</body>
+</html>
