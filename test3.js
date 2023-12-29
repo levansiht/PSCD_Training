@@ -121,5 +121,5 @@ $(document).ready(function () {
             displayTable();
         }
     });
-    displayTable();
+    displayTable()
 });
