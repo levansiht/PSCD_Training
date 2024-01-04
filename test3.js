@@ -1,6 +1,6 @@
 import data from "./data.js";
 
-$(document).ready(function () {
+$(document).ready(() => {
     let tableBody = $("#table-body");
     let select = $("#select");
     let pagination = $("#pagination");
@@ -9,7 +9,69 @@ $(document).ready(function () {
     let currentPage = 1;
     let entriesPerPage = parseInt(select.val());
     let totalEntries = data.length;
-    function displayTable() {
+
+    // const filterData = (searchTerm) => {
+    //     return data.filter(row => {
+    //         return Object.values(row).some(value => {
+    //             return String(value).toLowerCase().includes(searchTerm.toLowerCase());
+    //         });
+    //     });
+    // };
+    const filterData = (searchTerm) => {
+        const filteredData = [];
+        for (let i = 0; i < data.length; i++) {
+            const row = data[i];
+            let found = false;
+            for (const key in row) {
+                const value = row[key];
+                if (String(value).toLowerCase().includes(searchTerm.toLowerCase())) {
+                    found = true; 
+                    break;
+                }
+            }
+            if (found) {
+                filteredData.push(row);
+            }
+        }
+    
+        return filteredData;
+    };
+    
+    
+    
+    // const binarySearch = (arr, searchTerm) => {
+    //     let left = 0;
+    //     let right = arr.length - 1;
+    //     while (left <= right) {
+    //         const mid = Math.floor((left + right) / 2);
+    //         const row = arr[mid];
+    //         if (Object.values(row).some(value => String(value).toLowerCase().includes(searchTerm.toLowerCase()))) {
+    //             return mid; 
+    //         } else {
+    //             const result = searchTerm.localeCompare(Object.values(row).toString().toLowerCase());
+    //             if (result < 0) {
+    //                 right = mid - 1;
+    //             } else {
+    //                 left = mid + 1;
+    //             }
+    //         }
+    //     } 
+    // };
+    // const filterData = (searchTerm) => {
+    //     const sortedData = data.slice().sort((a, b) => Object.values(a).toString().localeCompare(Object.values(b).toString()));
+    //     const index = binarySearch(sortedData, searchTerm);
+    //         const result = [];
+    //         for (let i = index; i < sortedData.length; i++) {
+    //             const row = sortedData[i];
+    //             if (Object.values(row).some(value => String(value).toLowerCase().includes(searchTerm.toLowerCase()))) {
+    //                 result.push(row);
+    //             } else {
+    //                 break; 
+    //             }
+    //         }
+    //         return result;
+    //     };
+    const displayTable = () => {
         let start = (currentPage - 1) * entriesPerPage + 1;
         let end = start + entriesPerPage - 1;
 
@@ -17,16 +79,27 @@ $(document).ready(function () {
             currentPage = Math.ceil(totalEntries / entriesPerPage);
             start = (currentPage - 1) * entriesPerPage + 1;
         }
-        let slicedData = data.slice(start - 1, Math.min(end, totalEntries));
-        tableBody.html(slicedData.map(item =>
-            $("<tr>").html(item.map(value => $("<td>").text(value)))
-        ));
-        updatePagination();
+
+        let filteredData = filterData(searchInput.val()); 
+        let slicedData = filteredData.slice(start - 1, Math.min(end, totalEntries));
+
+        let htmlString = "";
+        slicedData.forEach(item => {
+            htmlString += "<tr>";
+            item.forEach(value => {
+                htmlString += "<td>" + value + "</td>";
+            });
+            htmlString += "</tr>";
+        });
+        tableBody.html(htmlString);
+        updatePagination(filteredData);
         showEntriesInfo(currentPage, entriesPerPage, totalEntries);
-    }
-    function updatePagination() {
+    };
+
+    const updatePagination = (filteredData) => {
         pagination.empty();
-        let totalPages = Math.ceil(totalEntries / entriesPerPage);
+        let totalPages = Math.ceil(filteredData.length / entriesPerPage);
+
         if (totalPages > 0 && currentPage <= totalPages) {
             let prevButton = $("<li class='pagination-btn prev'><a href='#'>Previous</a></li>");
             $(prevButton).click(() => {
@@ -35,6 +108,7 @@ $(document).ready(function () {
                     displayTable();
                 }
             });
+
             if (currentPage === 1) {
                 $(prevButton).addClass('disabled');
             }
@@ -60,24 +134,27 @@ $(document).ready(function () {
                     displayTable();
                 }
             });
+
             if (currentPage === totalPages) {
                 $(nextButton).addClass('disabled');
             }
             pagination.append(nextButton);
         }
-    }
-    function showEntriesInfo(currentPage, entriesPerPage, totalEntries) {
+    };
+
+    const showEntriesInfo = () => {
         let startIndex = ((currentPage - 1) * entriesPerPage + 1);
         let endIndex = Math.min((currentPage * entriesPerPage), totalEntries);
-        entriesInfo.html(`Displaying ${startIndex} to ${endIndex} of ${totalEntries} entries`);
-    }
-    select.on('change', function () {
-        let newEntriesPerPage = parseInt($(this).val());
+        entriesInfo.html(`Showing ${startIndex} to ${endIndex} of ${totalEntries} entries`);
+    };
+
+    select.on('change', () => {
+        let newEntriesPerPage = parseInt(select.val());
         currentPage = Math.ceil((currentPage * entriesPerPage) / newEntriesPerPage);
         entriesPerPage = newEntriesPerPage;
         displayTable();
-        updatePagination();
     });
+
     let sortColumn = 0;
     let sortState = 'asc';
     $('th.sorting').on('click', function () {
@@ -88,14 +165,15 @@ $(document).ready(function () {
             sortState = 'asc';
         }
         sortColumn = column;
+
         data.sort((a, b) => {
             let A, B;
             if (column === 5) {
                 A = parseFloat(a[column].replace(/\$|,/g, ''));
                 B = parseFloat(b[column].replace(/\$|,/g, ''));
             } else {
-                A = a[sortColumn];
-                B = b[sortColumn];
+                A = a[column];
+                B = b[column];
             }
             let compareResult = 0;
 
@@ -106,20 +184,24 @@ $(document).ready(function () {
             }
             return (sortState === 'asc') ? compareResult : -compareResult;
         });
+
         currentPage = 1;
         displayTable();
         $('th.sorting').removeClass('sorting-asc sorting-desc');
         $('th:eq(' + sortColumn + ')').addClass('sorting-' + sortState);
     });
-    searchInput.on("input", function () {
+
+    searchInput.on("input", () => {
         currentPage = 1;
         displayTable();
     });
-    searchInput.on("keypress", function (event) {
-        if (event.which === 13) { 
+
+    searchInput.on("keypress", (event) => {
+        if (event.which === 13) {
             currentPage = 1;
             displayTable();
         }
     });
-    displayTable()
+
+    displayTable();
 });
